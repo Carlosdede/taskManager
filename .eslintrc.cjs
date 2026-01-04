@@ -14,6 +14,10 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react/jsx-no-target-blank": "off",
+
+    // 🔥 desativa validação de prop-types (comum em tutoriais)
+    "react/prop-types": "off",
+
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
