@@ -52,7 +52,7 @@ const Tasks = () => {
           <div className="space-y-3 text-sm">
             <TasksSeparator title={"Tarde"} icon={<CloudSun />} />
             {afternoonTasks.map((task) => (
-              <p key={task.id}>{task.title}</p>
+              <TaskItem key={task.id} task={task} />
             ))}
           </div>
         </div>
@@ -61,7 +61,7 @@ const Tasks = () => {
           <div className="space-y-3 text-sm">
             <TasksSeparator title={"Noite"} icon={<MoonIcon />} />
             {nightTasks.map((task) => (
-              <p key={task.id}>{task.title}</p>
+              <TaskItem key={task.id} task={task} />
             ))}
           </div>
         </div>
