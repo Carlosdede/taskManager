@@ -70,7 +70,7 @@ const Tasks = () => {
             <TaskItem
               key={task.id}
               task={task}
-              handleTaskCheckboxClick={handleTaskCheckboxClick}
+              handleCheckboxClick={handleTaskCheckboxClick}
             />
           ))}
         </div>
@@ -82,7 +82,7 @@ const Tasks = () => {
               <TaskItem
                 key={task.id}
                 task={task}
-                handleTaskCheckboxClick={handleTaskCheckboxClick}
+                handleCheckboxClick={handleTaskCheckboxClick}
               />
             ))}
           </div>
@@ -95,7 +95,7 @@ const Tasks = () => {
               <TaskItem
                 key={task.id}
                 task={task}
-                handleTaskCheckboxClick={handleTaskCheckboxClick}
+                handleCheckboxClick={handleTaskCheckboxClick}
               />
             ))}
           </div>
