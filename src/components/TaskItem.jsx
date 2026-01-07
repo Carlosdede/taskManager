@@ -4,7 +4,7 @@ import DetailsIcon from "../assets/icons/details.svg?react";
 import TrashIcon from "../assets/icons/trash.svg?react";
 import Button from "../components/Button";
 
-const TaskItem = ({ task, handleCheckboxClick }) => {
+const TaskItem = ({ task, handleCheckboxClick, handleDeleteClick }) => {
   const getStatusClasses = () => {
     if (task.status === "done") {
       return "bg-[#00ADB5]  text-[#00ADB5]";
@@ -39,7 +39,7 @@ const TaskItem = ({ task, handleCheckboxClick }) => {
         {task.title}
       </div>
       <div className="flex items-center">
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={() => handleDeleteClick(task.id)}>
           <TrashIcon className="text-red-500" />
         </Button>
 
