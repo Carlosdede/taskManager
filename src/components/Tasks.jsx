@@ -35,12 +35,12 @@ const Tasks = () => {
       }
 
       if (task.status === "in_progress") {
-        toast.success("Tarefa em progresso!");
+        toast.success("Tarefa concluída com sucesso!");
         return { ...task, status: "done" };
       }
 
       if (task.status === "done") {
-        toast.success("Tarefa concluída!");
+        toast.success("Tarefa reiniciada com sucesso!");
         return { ...task, status: "not_started" };
       }
 
