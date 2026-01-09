@@ -15,6 +15,10 @@ const Tasks = () => {
   const [tasks, setTasks] = useState(TASKS);
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
 
+  const handleDialogClose = () => {
+    setAddTaskDialogIsOpen(false);
+  };
+
   const morningTasks = tasks.filter((task) => task.time === "morning");
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
   const nightTasks = tasks.filter((task) => task.time === "night");
@@ -67,14 +71,14 @@ const Tasks = () => {
             <TrashIcon />
           </Button>
 
-          <Button
-            variant={"primary"}
-            onClick={() => setAddTaskDialogIsOpen(true)}
-          >
+          <Button onClick={() => setAddTaskDialogIsOpen(true)}>
             Nova tarefa
             <AddIcon />
           </Button>
-          <AddTaskDialog isOpen={addTaskDialogIsOpen} />
+          <AddTaskDialog
+            isOpen={addTaskDialogIsOpen}
+            handleClose={handleDialogClose}
+          />
         </div>
       </div>
       {/*LISTA DE TAREFAS*/}
