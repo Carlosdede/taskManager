@@ -2,12 +2,16 @@ import Input from "./Input";
 import { createPortal } from "react-dom";
 import Button from "./Button";
 import { CSSTransition } from "react-transition-group";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./AddTaskDialog.css";
 
 import TimeSelect from "./TimeSelect";
 
-const AddTaskDialog = ({ isOpen, handleClose }) => {
+const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
+  const [title, setTitle] = useState();
+  const [time, setTime] = useState();
+  const [description, setDescription] = useState();
+
   const nodeRef = useRef();
 
   return (
@@ -36,13 +40,20 @@ const AddTaskDialog = ({ isOpen, handleClose }) => {
                   id="title"
                   label="Título"
                   placeholder="Insira o título da tarefa"
+                  value="title"
+                  onChange={(event) => setTitle(event.target.value)}
                 />
-                <TimeSelect />
+                <TimeSelect
+                  value={time}
+                  onChange={(event) => setTime(event.target.value)}
+                />
 
                 <Input
                   id="description"
                   label="Descrição"
                   placeholder="Descreva a tarefa"
+                  value="description"
+                  onChange={(event) => setDescription(event.target.value)}
                 />
                 <div className="flex gap-3">
                   <Button
@@ -53,7 +64,20 @@ const AddTaskDialog = ({ isOpen, handleClose }) => {
                   >
                     Cancelar
                   </Button>
-                  <Button size="large" className="w-full">
+                  <Button
+                    size="large"
+                    className="w-full"
+                    onClick={() => {
+                      handleSubmit({
+                        id: Math.random(),
+                        title,
+                        time,
+                        description,
+                        status: "not_satarted",
+                      });
+                      handleClose();
+                    }}
+                  >
                     Salvar
                   </Button>
                 </div>
