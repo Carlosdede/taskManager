@@ -28,7 +28,7 @@ const Button = ({
   return (
     <button
       {...rest}
-      className={`flex items-center justify-center gap-1 rounded-md px-3 font-semibold transition hover:opacity-70 ${getVariantClasses()} ${getSizeClasses()} ${className}`}
+      className={`flex items-center justify-center gap-1 rounded-md p-1 px-3 font-semibold transition hover:opacity-70 ${getVariantClasses()} ${getSizeClasses()} ${className}`}
     >
       {children}
     </button>

@@ -21,13 +21,6 @@ const TASKS = [
     time: "morning",
     status: "done",
   },
-  {
-    id: 4,
-    title: "Planejar o dia",
-    description: "Organizar tarefas e prioridades do dia",
-    time: "morning",
-    status: "done",
-  },
 
   {
     id: 5,
