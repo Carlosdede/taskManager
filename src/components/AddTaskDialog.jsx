@@ -4,6 +4,7 @@ import Button from "./Button";
 import { CSSTransition } from "react-transition-group";
 import { useRef, useState } from "react";
 import "./AddTaskDialog.css";
+import { v4 } from "uuid";
 
 import TimeSelect from "./TimeSelect";
 
@@ -13,6 +14,17 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
   const [description, setDescription] = useState();
 
   const nodeRef = useRef();
+
+  const handleSavedClick = () => {
+    handleSubmit({
+      id: v4(),
+      title,
+      time,
+      description,
+      status: "not_satarted",
+    });
+    handleClose();
+  };
 
   return (
     <CSSTransition
@@ -67,16 +79,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   <Button
                     size="large"
                     className="w-full"
-                    onClick={() => {
-                      handleSubmit({
-                        id: Math.random(),
-                        title,
-                        time,
-                        description,
-                        status: "not_satarted",
-                      });
-                      handleClose();
-                    }}
+                    onClick={handleSavedClick}
                   >
                     Salvar
                   </Button>
