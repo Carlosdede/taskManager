@@ -2,18 +2,26 @@ import Input from "./Input";
 import { createPortal } from "react-dom";
 import Button from "./Button";
 import { CSSTransition } from "react-transition-group";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./AddTaskDialog.css";
 import { v4 } from "uuid";
 
 import TimeSelect from "./TimeSelect";
 
 const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
-  const [title, setTitle] = useState();
-  const [time, setTime] = useState();
-  const [description, setDescription] = useState();
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("morning");
+  const [description, setDescription] = useState("");
 
   const nodeRef = useRef();
+
+  useEffect(() => {
+    if (!isOpen) {
+      setTitle("");
+      setTime("");
+      setDescription("");
+    }
+  }, [isOpen]);
 
   const handleSavedClick = () => {
     handleSubmit({
@@ -52,7 +60,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   id="title"
                   label="Título"
                   placeholder="Insira o título da tarefa"
-                  value="title"
+                  value={title}
                   onChange={(event) => setTitle(event.target.value)}
                 />
                 <TimeSelect
@@ -64,7 +72,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   id="description"
                   label="Descrição"
                   placeholder="Descreva a tarefa"
-                  value="description"
+                  value={description}
                   onChange={(event) => setDescription(event.target.value)}
                 />
                 <div className="flex gap-3">
