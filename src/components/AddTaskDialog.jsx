@@ -32,7 +32,7 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
       title,
       time,
       description,
-      status: "not_satarted",
+      status: "not_started",
     });
     handleClose();
   };
