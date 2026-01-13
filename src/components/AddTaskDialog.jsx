@@ -12,6 +12,13 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("morning");
   const [description, setDescription] = useState("");
+  const [error, setErrors] = useState("");
+
+  const titleError = error.find((error) => error.inputName === "title");
+
+  const descriptionError = error.find(
+    (error) => error.inputName === "description"
+  );
 
   const nodeRef = useRef();
 
@@ -24,6 +31,31 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
   }, [isOpen]);
 
   const handleSavedClick = () => {
+    const newErrors = [];
+
+    if (!title.trim()) {
+      newErrors.push({
+        inputName: "title",
+        message: "O título é obrigatório",
+      });
+    }
+    if (!time.trim()) {
+      newErrors.push({
+        inputName: "time",
+        message: "O Horário é obrigatório",
+      });
+    }
+    if (!description.trim()) {
+      newErrors.push({
+        inputName: "description",
+        message: "A descrição é obrigatório",
+      });
+    }
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     if (!title.trim() || !description.trim()) {
       return alert("Preencha todos os campos.");
     }
@@ -65,7 +97,9 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   placeholder="Insira o título da tarefa"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
+                  errorMessage={titleError?.message}
                 />
+
                 <TimeSelect
                   value={time}
                   onChange={(event) => setTime(event.target.value)}
@@ -77,7 +111,9 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                   placeholder="Descreva a tarefa"
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
+                  errorMessage={descriptionError?.message}
                 />
+
                 <div className="flex gap-3">
                   <Button
                     size="large"
