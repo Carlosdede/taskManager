@@ -1,8 +1,14 @@
 import { tv } from "tailwind-variants";
 
-const Button = ({ children, color = "primary", size, className, ...rest }) => {
+const Button = ({
+  children,
+  color = "primary",
+  size = "small",
+  className,
+  ...rest
+}) => {
   const button = tv({
-    base: "flex items-center justify-center gap-1 rounded-md p-1 px-3 font-semibold transition hover:opacity-70",
+    base: "flex items-center justify-center gap-2 rounded-md px-3 font-semibold transition hover:opacity-75",
     variants: {
       colors: {
         primary: "bg-brand-primary text-white",
