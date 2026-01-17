@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import InputLabel from "./InputLabel";
 import InputsErrorMessages from "./InputsErrorMessages";
+import PropTypes from "prop-types";
 
 const Input = forwardRef(({ label, errorMessage, ...rest }, ref) => {
   return (
@@ -17,5 +18,12 @@ const Input = forwardRef(({ label, errorMessage, ...rest }, ref) => {
     </div>
   );
 });
+
+Input.propTypes = {
+  label: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string,
+  placeholder: PropTypes.string,
+  id: PropTypes.string.isRequired,
+};
 Input.displayName = "Input";
 export default Input;

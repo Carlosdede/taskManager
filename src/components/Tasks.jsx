@@ -5,16 +5,26 @@ import SunIcon from "../assets/icons/sun.svg?react";
 import CloudSun from "../assets/icons/cloud-sun.svg?react";
 import MoonIcon from "../assets/icons/moon.svg?react";
 import TasksSeparator from "./TasksSeparator";
-import { useState } from "react";
-import TASKS from "../constants/tasks";
+import { useEffect, useState } from "react";
+//import TASKS from "../constants/tasks";
 import TaskItem from "./TaskItem";
 import { toast } from "sonner";
 import AddTaskDialog from "./AddTaskDialog";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState([]);
   const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
 
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch("http://localhost:3000/tasks", {
+        method: "GET",
+      });
+      const tasks = await response.json();
+      setTasks(tasks);
+    };
+    fetchTasks();
+  }, []);
   const handleDialogClose = () => {
     setAddTaskDialogIsOpen(false);
   };
