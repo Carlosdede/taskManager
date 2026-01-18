@@ -5,6 +5,7 @@ import TrashIcon from "../assets/icons/trash.svg?react";
 import Button from "../components/Button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
   const [deleteIsLoading, setDeleteIsLoading] = useState(false);
@@ -51,7 +52,7 @@ const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
           />
           {task.status === "done" && <CheckIcon />}
           {task.status === "in_progress" && (
-            <LoaderIcon className="animate-spin text-gray-400" />
+            <LoaderIcon className="animate-spin text-brand-white" />
           )}
         </label>
         {task.title}
@@ -67,12 +68,11 @@ const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
           ) : (
             <TrashIcon className="text-brand-text-gray" />
           )}
-          <TrashIcon className="text-red-500" />
         </Button>
 
-        <a href="#" className="transition hover:opacity-75">
+        <Link to={`/task/${task.id}`}>
           <DetailsIcon />
-        </a>
+        </Link>
       </div>
     </div>
   );
