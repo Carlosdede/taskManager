@@ -4,15 +4,22 @@ import Button from "./Button";
 import { CSSTransition } from "react-transition-group";
 import { useEffect, useRef, useState } from "react";
 import "./AddTaskDialog.css";
-import { v4 } from "uuid";
 import PropTypes from "prop-types";
+import LoaderIcon from "../assets/icons/loader.svg?react";
+import { v4 } from "uuid";
 
 import TimeSelect from "./TimeSelect";
 
-const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
+const AddTaskDialog = ({
+  isOpen,
+  handleClose,
+  onSubmitSuccess,
+  onSubmitError,
+}) => {
   const [time, setTime] = useState("morning");
 
   const [error, setErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const titleError = error.find((error) => error.inputName === "title");
 
@@ -30,7 +37,8 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
     }
   }, [isOpen]);
 
-  const handleSavedClick = () => {
+  const handleSavedClick = async () => {
+    setIsLoading(true);
     const newErrors = [];
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
@@ -51,20 +59,31 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
     setErrors(newErrors);
 
     if (newErrors.length > 0) {
-      return;
+      return setIsLoading(false);
     }
+    const task = {
+      id: v4(),
+      title,
+      description,
+      time,
+      status: "not_started",
+    };
 
+    const response = await fetch("http://localhost:3000/tasks", {
+      method: "POST",
+      body: JSON.stringify(task),
+    });
+    if (!response.ok) {
+      setIsLoading(false);
+      return onSubmitError();
+    }
+    onSubmitSuccess(task);
+    setIsLoading(false);
+
+    handleClose();
     if (!title.trim() || !description.trim()) {
       return alert("Preencha todos os campos.");
     }
-    handleSubmit({
-      id: v4(),
-      title,
-      time,
-      description,
-      status: "not_started",
-    });
-    handleClose();
   };
 
   return (
@@ -123,7 +142,9 @@ const AddTaskDialog = ({ isOpen, handleClose, handleSubmit }) => {
                     size="large"
                     className="w-full"
                     onClick={handleSavedClick}
+                    disabled={isLoading}
                   >
+                    {isLoading && <LoaderIcon className="animate-spin" />}
                     Salvar
                   </Button>
                 </div>

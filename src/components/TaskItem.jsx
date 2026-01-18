@@ -3,8 +3,26 @@ import LoaderIcon from "../assets/icons/loader.svg?react";
 import DetailsIcon from "../assets/icons/details.svg?react";
 import TrashIcon from "../assets/icons/trash.svg?react";
 import Button from "../components/Button";
+import { useState } from "react";
+import { toast } from "sonner";
 
-const TaskItem = ({ task, handleCheckboxClick, handleDeleteClick }) => {
+const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
+  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+
+  const handleDeleteClick = async () => {
+    setDeleteIsLoading(true);
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      return toast.error(
+        "Erro ao deletar a tarefa, Por favor tente novmanete."
+      );
+    }
+    onDeleteSuccess(task.id);
+    setDeleteIsLoading(false);
+  };
+
   const getStatusClasses = () => {
     if (task.status === "done") {
       return "bg-brand-primary  text-brand-primary";
@@ -38,8 +56,17 @@ const TaskItem = ({ task, handleCheckboxClick, handleDeleteClick }) => {
         </label>
         {task.title}
       </div>
-      <div className="flex items-center">
-        <Button color="ghost" onClick={() => handleDeleteClick(task.id)}>
+      <div className="flex items-center gap-2">
+        <Button
+          color="ghost"
+          onClick={handleDeleteClick}
+          disabled={deleteIsLoading}
+        >
+          {deleteIsLoading ? (
+            <LoaderIcon className="animate-spin text-brand-text-gray" />
+          ) : (
+            <TrashIcon className="text-brand-text-gray" />
+          )}
           <TrashIcon className="text-red-500" />
         </Button>
 
