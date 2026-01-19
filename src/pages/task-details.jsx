@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import SideBar from "../components/Sidebar";
+import { ArrowLeftIcon, ChevronRightIcon, TrashIcon } from "../assets/icons";
+import Button from "../components/Button";
+import { Input } from "postcss";
 
 const TaskDetailsPage = () => {
   const { taskId } = useParams();
   const [task, setTask] = useState();
+  const navigate = useNavigate();
+  const handleBackClick = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     const fecthTask = async () => {
@@ -16,9 +24,40 @@ const TaskDetailsPage = () => {
     fecthTask();
   }, [taskId]);
   return (
-    <div>
-      <h1>{task?.title}</h1>
-      <p>{task?.description}</p>
+    <div className="flex">
+      <SideBar />
+      <div className="w-full px-8 py-16">
+        <div className="flex w-full justify-between">
+          <div>
+            <button
+              onClick={handleBackClick}
+              className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary"
+            >
+              <ArrowLeftIcon />
+            </button>
+
+            <div className="flex items-center gap-1 text-xs">
+              <span className="text-brand-text-gray">Minhas tarefas</span>
+              <ChevronRightIcon className="text-brand-text-gray" />
+              <span className="font-semibold text-brand-primary">
+                {task?.title}
+              </span>
+            </div>
+            <h1 className="mt-1 text-xl font-semibold">{task?.title}</h1>
+          </div>
+          <Button className="h-fit self-end bg-red-500">
+            <TrashIcon />
+            Deletar tarefa
+          </Button>
+        </div>
+
+        <div className="space-y-6 rounded-xl bg-brand-white p-6">
+          <div>
+            <Input />
+          </div>
+          <div></div>
+        </div>
+      </div>
     </div>
   );
 };
