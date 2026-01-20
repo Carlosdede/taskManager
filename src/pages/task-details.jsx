@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import SideBar from "../components/Sidebar";
 import { ArrowLeftIcon, ChevronRightIcon, TrashIcon } from "../assets/icons";
 import Button from "../components/Button";
-import { Input } from "postcss";
+import Input from "../components/Input";
+import TimeSelect from "../components/TimeSelect";
 
 const TaskDetailsPage = () => {
   const { taskId } = useParams();
@@ -26,7 +27,7 @@ const TaskDetailsPage = () => {
   return (
     <div className="flex">
       <SideBar />
-      <div className="w-full px-8 py-16">
+      <div className="w-full space-y-6 px-8 py-16">
         <div className="flex w-full justify-between">
           <div>
             <button
@@ -37,7 +38,12 @@ const TaskDetailsPage = () => {
             </button>
 
             <div className="flex items-center gap-1 text-xs">
-              <span className="text-brand-text-gray">Minhas tarefas</span>
+              <span
+                onClick={handleBackClick}
+                className="cursor-pointer text-brand-text-gray"
+              >
+                Minhas tarefas
+              </span>
               <ChevronRightIcon className="text-brand-text-gray" />
               <span className="font-semibold text-brand-primary">
                 {task?.title}
@@ -53,9 +59,26 @@ const TaskDetailsPage = () => {
 
         <div className="space-y-6 rounded-xl bg-brand-white p-6">
           <div>
-            <Input />
+            <Input id="title" label="Título" value={task?.title} />
           </div>
-          <div></div>
+          <div>
+            <TimeSelect value={task?.time} />
+          </div>
+          <div>
+            <Input
+              id="description"
+              label="Descrição"
+              value={task?.description}
+            />
+          </div>
+        </div>
+        <div className="flex w-full justify-end gap-3">
+          <Button color="secondary" size="large">
+            Cancelar
+          </Button>
+          <Button color="primary" size="large">
+            Salvar
+          </Button>
         </div>
       </div>
     </div>
