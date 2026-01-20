@@ -32,7 +32,7 @@ const TaskDetailsPage = () => {
           <div>
             <button
               onClick={handleBackClick}
-              className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary"
+              className="mb-3 flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary"
             >
               <ArrowLeftIcon />
             </button>
@@ -49,7 +49,7 @@ const TaskDetailsPage = () => {
                 {task?.title}
               </span>
             </div>
-            <h1 className="mt-1 text-xl font-semibold">{task?.title}</h1>
+            <h1 className="mt-2 text-xl font-semibold">{task?.title}</h1>
           </div>
           <Button className="h-fit self-end bg-red-500">
             <TrashIcon />

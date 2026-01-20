@@ -1,13 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Treinar",
-      "description": "Treinar para competição de Jiujitsu",
-      "time": "morning",
-      "status": "done"
-    },
-    {
       "id": "2",
       "title": "Alongamento",
       "description": "Alongamento e mobilidade ao acordar",
@@ -29,13 +22,6 @@
       "status": "in_progress"
     },
     {
-      "id": "7",
-      "title": "Responder mensagens",
-      "description": "Responder e-mails e mensagens importantes",
-      "time": "afternoon",
-      "status": "in_progress"
-    },
-    {
       "id": "8",
       "title": "Estudar programação",
       "description": "Estudar Node.js e backend",
@@ -46,13 +32,6 @@
       "id": "9",
       "title": "Ler um livro",
       "description": "Leitura leve para relaxar",
-      "time": "night",
-      "status": "not_started"
-    },
-    {
-      "id": "10",
-      "title": "Planejar o dia seguinte",
-      "description": "Organizar tarefas para o próximo dia",
       "time": "night",
       "status": "not_started"
     }

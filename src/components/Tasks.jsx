@@ -33,7 +33,7 @@ const Tasks = () => {
   const afternoonTasks = tasks.filter((task) => task.time === "afternoon");
   const nightTasks = tasks.filter((task) => task.time === "night");
 
-  const onDeleteTaskSuccess = async (taskId) => {
+  const onDeleteTaskSuccess = (taskId) => {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
     toast.success("Tarefa removida com sucesso!");
