@@ -1,15 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SideBar from "../components/Sidebar";
-import { ArrowLeftIcon, ChevronRightIcon, TrashIcon } from "../assets/icons";
+import {
+  ArrowLeftIcon,
+  ChevronRightIcon,
+  LoaderIcon,
+  TrashIcon,
+} from "../assets/icons";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import TimeSelect from "../components/TimeSelect";
+import { v4 } from "uuid";
+import { toast } from "sonner";
 
 const TaskDetailsPage = () => {
   const { taskId } = useParams();
   const [task, setTask] = useState();
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [saveIsLoading, setSaveIsLoading] = useState(false);
+
+  const titleRef = useRef();
+  const timeRef = useRef();
+  const descriptionRef = useRef();
+
   const handleBackClick = () => {
     navigate(-1);
   };
@@ -24,6 +38,65 @@ const TaskDetailsPage = () => {
     };
     fecthTask();
   }, [taskId]);
+
+  const handleSavedClick = async () => {
+    setSaveIsLoading(true);
+    const newErrors = [];
+    const title = titleRef.current.value;
+    const description = descriptionRef.current.value;
+    const time = timeRef.current.value;
+
+    if (!title.trim()) {
+      newErrors.push({
+        inputName: "title",
+        message: "O título é obrigatório",
+      });
+    }
+
+    if (!description.trim()) {
+      newErrors.push({
+        inputName: "description",
+        message: "A descrição é obrigatório",
+      });
+    }
+
+    setError(newErrors);
+
+    if (newErrors.length > 0) {
+      return setSaveIsLoading(false);
+    }
+    const task = {
+      id: v4(),
+      title,
+      description,
+      time,
+      status: "not_started",
+    };
+
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: "PATH",
+      body: JSON.stringify({
+        title,
+        description,
+        time,
+      }),
+    });
+    if (!response.ok) {
+      toast.error("Ocorreu um erro ao salvar a tarefa");
+      return setSaveIsLoading(false);
+    }
+    const newTask = await response.json();
+    setTask(newTask);
+
+    setSaveIsLoading(false);
+    toast.success("Tarefa salva com sucesso!");
+  };
+
+  const titleError = error.find((error) => error.inputName === "title");
+  const descriptionError = error.find(
+    (error) => error.inputName === "description"
+  );
+  //const timeError = error.find((error) => error.inputName === "time");
   return (
     <div className="flex">
       <SideBar />
@@ -59,16 +132,28 @@ const TaskDetailsPage = () => {
 
         <div className="space-y-6 rounded-xl bg-brand-white p-6">
           <div>
-            <Input id="title" label="Título" defautValue={task?.title} />
+            <Input
+              id="title"
+              label="Título"
+              defautValue={task?.title}
+              errorMessage={titleError?.message}
+              ref={titleRef}
+            />
           </div>
           <div>
-            <TimeSelect defautValue={task?.time} />
+            <TimeSelect
+              defautValue={task?.time}
+              // errorMessage={timeError?.message}
+              ref={descriptionRef}
+            />
           </div>
           <div>
             <Input
               id="description"
               label="Descrição"
               defautValue={task?.description}
+              errorMessage={descriptionError?.message}
+              ref={descriptionRef}
             />
           </div>
         </div>
@@ -76,7 +161,13 @@ const TaskDetailsPage = () => {
           <Button color="secondary" size="large">
             Cancelar
           </Button>
-          <Button color="primary" size="large">
+          <Button
+            color="primary"
+            size="large"
+            onClick={handleSavedClick}
+            disabled={saveIsLoading}
+          >
+            {saveIsLoading && <LoaderIcon className="animate-spin" />}
             Salvar
           </Button>
         </div>

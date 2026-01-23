@@ -27,13 +27,6 @@
       "description": "Estudar Node.js e backend",
       "time": "night",
       "status": "not_started"
-    },
-    {
-      "id": "9",
-      "title": "Ler um livro",
-      "description": "Leitura leve para relaxar",
-      "time": "night",
-      "status": "not_started"
     }
   ]
 }
