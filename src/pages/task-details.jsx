@@ -38,12 +38,12 @@ const TaskDetailsPage = () => {
             </button>
 
             <div className="flex items-center gap-1 text-xs">
-              <span
+              <button
                 onClick={handleBackClick}
                 className="cursor-pointer text-brand-text-gray"
               >
                 Minhas tarefas
-              </span>
+              </button>
               <ChevronRightIcon className="text-brand-text-gray" />
               <span className="font-semibold text-brand-primary">
                 {task?.title}
@@ -59,16 +59,16 @@ const TaskDetailsPage = () => {
 
         <div className="space-y-6 rounded-xl bg-brand-white p-6">
           <div>
-            <Input id="title" label="Título" value={task?.title} />
+            <Input id="title" label="Título" defautValue={task?.title} />
           </div>
           <div>
-            <TimeSelect value={task?.time} />
+            <TimeSelect defautValue={task?.time} />
           </div>
           <div>
             <Input
               id="description"
               label="Descrição"
-              value={task?.description}
+              defautValue={task?.description}
             />
           </div>
         </div>
