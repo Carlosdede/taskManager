@@ -128,7 +128,7 @@ const TaskDetailsPage = () => {
             <div>
               <TimeSelect
                 defautValue={task?.time}
-                {...register("time")}
+                {...register("time", { required: true })}
                 errorMessage={errors?.time?.message}
               />
             </div>
