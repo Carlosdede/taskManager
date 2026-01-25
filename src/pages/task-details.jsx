@@ -92,6 +92,16 @@ const TaskDetailsPage = () => {
     toast.success("Tarefa salva com sucesso!");
   };
 
+  const handleDeleteClick = async () => {
+    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      return toast.error("Ocorreu um erro ao deletar a tarefa");
+    }
+    toast.success("Tarefa deletada com sucesso!");
+    navigate(-1);
+  };
   const titleError = error.find((error) => error.inputName === "title");
   const descriptionError = error.find(
     (error) => error.inputName === "description"
@@ -124,7 +134,10 @@ const TaskDetailsPage = () => {
             </div>
             <h1 className="mt-2 text-xl font-semibold">{task?.title}</h1>
           </div>
-          <Button className="h-fit self-end bg-red-500">
+          <Button
+            className="h-fit self-end bg-red-500"
+            onClick={handleDeleteClick}
+          >
             <TrashIcon />
             Deletar tarefa
           </Button>
@@ -158,9 +171,6 @@ const TaskDetailsPage = () => {
           </div>
         </div>
         <div className="flex w-full justify-end gap-3">
-          <Button color="secondary" size="large">
-            Cancelar
-          </Button>
           <Button
             color="primary"
             size="large"
