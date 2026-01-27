@@ -1,27 +1,36 @@
 import CheckIcon from "../assets/icons/check.svg?react";
 import LoaderIcon from "../assets/icons/loader.svg?react";
 import DetailsIcon from "../assets/icons/details.svg?react";
-import TrashIcon from "../assets/icons/trash.svg?react";
+
 import Button from "../components/Button";
-import { useState } from "react";
+
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 
-const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
-  const [deleteIsLoading, setDeleteIsLoading] = useState(false);
+const TaskItem = ({ task, handleCheckboxClick }) => {
+  const { mutate } = useMutation({
+    mutationKey: ["deleteTask", task.id],
+    mutationFn: async () => {
+      const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
+        method: "DELETE",
+      });
+      return response.json();
+    },
+  });
 
   const handleDeleteClick = async () => {
-    setDeleteIsLoading(true);
-    const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
-      method: "DELETE",
+    mutate(undefined, {
+      onSuccess: () => {
+        QueryClient.setQueryData("tasks", (oldTasks) => {
+          return oldTasks.filter((oldTask) => (oldTask.id = !task.id));
+        });
+        toast.success("Tarefa deletada com sucesso!");
+      },
+      onError: () => {
+        toast.error("Erro ao deletar tarefa!");
+      },
     });
-    if (!response.ok) {
-      return toast.error(
-        "Erro ao deletar a tarefa, Por favor tente novmanete."
-      );
-    }
-    onDeleteSuccess(task.id);
-    setDeleteIsLoading(false);
   };
 
   const getStatusClasses = () => {
@@ -58,17 +67,7 @@ const TaskItem = ({ task, handleCheckboxClick, onDeleteSuccess }) => {
         {task.title}
       </div>
       <div className="flex items-center gap-2">
-        <Button
-          color="ghost"
-          onClick={handleDeleteClick}
-          disabled={deleteIsLoading}
-        >
-          {deleteIsLoading ? (
-            <LoaderIcon className="animate-spin text-brand-text-gray" />
-          ) : (
-            <TrashIcon className="text-brand-text-gray" />
-          )}
-        </Button>
+        <Button color="ghost" onClick={handleDeleteClick}></Button>
 
         <Link to={`/task/${task.id}`}>
           <DetailsIcon />

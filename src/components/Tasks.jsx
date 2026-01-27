@@ -33,14 +33,6 @@ const Tasks = () => {
   const afternoonTasks = tasks?.filter((task) => task.time === "afternoon");
   const nightTasks = tasks?.filter((task) => task.time === "night");
 
-  const onDeleteTaskSuccess = async (taskId) => {
-    QueryClient.setQueryData("tasks", (currentTasks) => {
-      return currentTasks.filter((task) => task.id !== taskId);
-    });
-
-    toast.success("Tarefa removida com sucesso!");
-  };
-
   const handleTaskCheckboxClick = (taskId) => {
     const newTasks = tasks?.map((task) => {
       if (task.id != taskId) {
@@ -120,7 +112,6 @@ const Tasks = () => {
               key={task.id}
               task={task}
               handleCheckboxClick={handleTaskCheckboxClick}
-              onDeleteSuccess={onDeleteTaskSuccess}
             />
           ))}
         </div>
@@ -139,7 +130,6 @@ const Tasks = () => {
                 key={task.id}
                 task={task}
                 handleCheckboxClick={handleTaskCheckboxClick}
-                onDeleteSuccess={onDeleteTaskSuccess}
               />
             ))}
           </div>
@@ -159,7 +149,6 @@ const Tasks = () => {
                 key={task.id}
                 task={task}
                 handleCheckboxClick={handleTaskCheckboxClick}
-                onDeleteSuccess={onDeleteTaskSuccess}
               />
             ))}
           </div>

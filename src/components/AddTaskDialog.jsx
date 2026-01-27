@@ -10,6 +10,7 @@ import { v4 } from "uuid";
 import { useForm } from "react-hook-form";
 
 import TimeSelect from "./TimeSelect";
+import { useMutation } from "@tanstack/react-query";
 
 const AddTaskDialog = ({
   isOpen,
@@ -17,6 +18,19 @@ const AddTaskDialog = ({
   onSubmitSuccess,
   onSubmitError,
 }) => {
+  const { mutate } = useMutation({
+    mutationKey: "addTask",
+    mutationFn: async (task) => {
+      const response = await fetch("http://localhost:3000/tasks", {
+        method: "POST",
+        body: JSON.stringify(task),
+      });
+      if (!response.ok) {
+        throw new Error();
+      }
+      return response.json();
+    },
+  });
   const [time, setTime] = useState("morning");
 
   const {
@@ -43,19 +57,17 @@ const AddTaskDialog = ({
       status: "not_started",
     };
 
-    const response = await fetch("http://localhost:3000/tasks", {
-      method: "POST",
-      body: JSON.stringify(task),
-    });
-    if (!response.ok) {
-      return onSubmitError();
-    }
-    onSubmitSuccess(task);
-    handleClose();
-    reset({
-      title: "",
-      time: "morning",
-      description: "",
+    mutate(task, {
+      onSuccess: () => {
+        onSubmitSuccess(task);
+        handleClose();
+        reset({
+          title: "",
+          time: "morning",
+          description: "",
+        });
+      },
+      onError: () => onSubmitError(),
     });
   };
   const handleCancelClick = () => {
