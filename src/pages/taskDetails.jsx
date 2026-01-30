@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useUpdateTask } from "../hooks/data/use-update-task";
 
-import { useGetUpatedTask } from "../hooks/data/use-get-updeted-task";
+import { useGetUpatedTask } from "../hooks/data/use-get-task";
 import { useDeleteTask } from "../hooks/data/use-delete-task";
 
 const TaskDetailsPage = () => {
@@ -36,7 +36,7 @@ const TaskDetailsPage = () => {
     useDeleteTask(taskId);
   const { data: task } = useGetUpatedTask({
     taskId,
-    onSuccess: (task) => reset(task),
+    onSuccess: reset,
   });
 
   const handleBackClick = () => {
