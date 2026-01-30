@@ -21,12 +21,12 @@ const TaskDetailsPage = () => {
 
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
 
-  const { mutate: updateTask } = useMutation({
+  const { mutate: updateTask, isPending: updatedTaskIsLoading } = useMutation({
     mutationKey: ["updateTask", taskId],
     mutationFn: async (data) => {
       const response = await fetch(`http://localhost:3000/tasks/${taskId}`, {
@@ -51,7 +51,7 @@ const TaskDetailsPage = () => {
       });
     },
   });
-  const { mutate: deleteTask } = useMutation({
+  const { mutate: deleteTask, isPending: deleteTaskIsLoading } = useMutation({
     mutationKey: ["deleteTask", taskId],
     mutationFn: async () => {
       const response = await fetch(`http://localhost:3000/tasks/${task.id}`, {
@@ -182,9 +182,12 @@ const TaskDetailsPage = () => {
               color="primary"
               size="large"
               type="submit"
-              disabled={isSubmitting}
+              disabled={updatedTaskIsLoading || deleteTaskIsLoading}
             >
-              {isSubmitting && <LoaderIcon className="animate-spin" />}
+              {updatedTaskIsLoading ||
+                (deleteTaskIsLoading && (
+                  <LoaderIcon className="animate-spin" />
+                ))}
               Salvar
             </Button>
           </div>
