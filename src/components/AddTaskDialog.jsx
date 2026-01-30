@@ -10,7 +10,8 @@ import { v4 } from "uuid";
 import { useForm } from "react-hook-form";
 
 import TimeSelect from "./TimeSelect";
-import { useMutation } from "@tanstack/react-query";
+
+import { useAddTasks } from "../hooks/data/use-add-tasks";
 
 const AddTaskDialog = ({
   isOpen,
@@ -18,19 +19,7 @@ const AddTaskDialog = ({
   onSubmitSuccess,
   onSubmitError,
 }) => {
-  const { mutate } = useMutation({
-    mutationKey: "addTask",
-    mutationFn: async (task) => {
-      const response = await fetch("http://localhost:3000/tasks", {
-        method: "POST",
-        body: JSON.stringify(task),
-      });
-      if (!response.ok) {
-        throw new Error();
-      }
-      return response.json();
-    },
-  });
+  const { mutate } = useAddTasks();
   const [time, setTime] = useState("morning");
 
   const {
