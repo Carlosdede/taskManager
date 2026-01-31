@@ -1,25 +1,19 @@
-import Button from "./Button";
-import AddIcon from "../assets/icons/add.svg?react";
-import TrashIcon from "../assets/icons/trash.svg?react";
 import SunIcon from "../assets/icons/sun.svg?react";
 import CloudSun from "../assets/icons/cloud-sun.svg?react";
 import MoonIcon from "../assets/icons/moon.svg?react";
 import TasksSeparator from "./TasksSeparator";
-import { useState } from "react";
+
 import TaskItem from "./TaskItem";
 import { toast } from "sonner";
-import AddTaskDialog from "./AddTaskDialog";
-import { QueryClient } from "@tanstack/react-query";
+
+import { useQueryClient } from "@tanstack/react-query";
 import { useGetTasks } from "../hooks/data/use-get-tasks";
+import Header from "./Header";
+import { taskQueriesKeys } from "../keys/queries";
 
 const Tasks = () => {
   const { data: tasks } = useGetTasks();
-
-  const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
-
-  const handleDialogClose = () => {
-    setAddTaskDialogIsOpen(false);
-  };
+  const QueryClient = useQueryClient();
 
   const morningTasks = tasks?.filter((task) => task.time === "morning");
   const afternoonTasks = tasks?.filter((task) => task.time === "afternoon");
@@ -48,47 +42,12 @@ const Tasks = () => {
 
       return task;
     });
-    QueryClient.setQueryData("tasks", newTasks);
-  };
-
-  const onTaskSubmitSuccess = async (task) => {
-    QueryClient.setQueryData("tasks", (currentTasks) => {
-      return [...currentTasks, task];
-    });
-    toast.success("Tarefa adicionada com sucesso!");
-  };
-  const onTaskSubmitError = () => {
-    toast.error("Erro ao adicionar tarefa");
+    QueryClient.setQueryData(taskQueriesKeys.getAll(), newTasks);
   };
 
   return (
     <div className="h-full w-full space-y-6 px-8 py-16">
-      <div className="flex w-full justify-between">
-        <div>
-          <span className="text-xs font-semibold text-brand-primary">
-            Minhas tarefas
-          </span>
-          <h2 className="text-xl font-semibold">Minhas Tarefas</h2>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Button color="ghost">
-            Limpar tarefa
-            <TrashIcon />
-          </Button>
-
-          <Button onClick={() => setAddTaskDialogIsOpen(true)}>
-            Nova tarefa
-            <AddIcon />
-          </Button>
-          <AddTaskDialog
-            isOpen={addTaskDialogIsOpen}
-            handleClose={handleDialogClose}
-            onSubmitSuccess={onTaskSubmitSuccess}
-            onSubmitError={onTaskSubmitError}
-          />
-        </div>
-      </div>
+      <Header subtitle="Minhas Tarefas" title="Minhas Tarefas" />
       {/*LISTA DE TAREFAS*/}
       <div className="rounded-xl bg-white p-6">
         <div className="space-y-3 text-sm">
