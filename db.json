@@ -8,13 +8,6 @@
       "status": "done"
     },
     {
-      "id": "5",
-      "title": "Trabalhar no projeto",
-      "description": "Desenvolver funcionalidades do projeto pessoal",
-      "time": "afternoon",
-      "status": "in_progress"
-    },
-    {
       "id": "6",
       "title": "Revisar código",
       "description": "Refatorar e revisar código antigo",
