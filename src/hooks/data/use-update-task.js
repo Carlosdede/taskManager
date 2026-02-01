@@ -1,30 +1,29 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { api } from "../../lib/axios";
-import { taskQueriesKeys } from "../../keys/queries";
-import { taskMutationKeys } from "../../keys/mutations";
+import { taskMutationKeys } from "../../keys/mutations"
+import { taskQueryKeys } from "../../keys/queries"
+import { api } from "../../lib/axios"
 
 export const useUpdateTask = (taskId) => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return useMutation({
     mutationKey: taskMutationKeys.update(taskId),
-    mutationFn: async (newTask) => {
+    mutationFn: async (data) => {
       const { data: updatedTask } = await api.patch(`/tasks/${taskId}`, {
-        title: newTask?.title?.trim(),
-        description: newTask?.description.trim(),
-        time: newTask?.time,
-        status: newTask?.status,
-      });
-
-      queryClient.setQueryData(taskQueriesKeys.getAll(), (oldtasks) => {
-        return oldtasks.map((task) => {
+        title: data?.title?.trim(),
+        description: data?.description?.trim(),
+        time: data?.time,
+        status: data?.status,
+      })
+      queryClient.setQueryData(taskQueryKeys.getAll(), (oldTasks) => {
+        return oldTasks.map((task) => {
           if (task.id === taskId) {
-            return updatedTask;
+            return updatedTask
           }
-          return task;
-        });
-      });
-      queryClient.setQueryData(taskQueriesKeys.getOne(taskId));
+          return task
+        })
+      })
+      queryClient.setQueryData(taskQueryKeys.getOne(taskId), updatedTask)
     },
-  });
-};
+  })
+}

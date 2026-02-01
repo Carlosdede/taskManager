@@ -1,5 +1,5 @@
-import { tv } from "tailwind-variants";
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
+import { tv } from "tailwind-variants"
 
 const Button = ({
   children,
@@ -9,27 +9,27 @@ const Button = ({
   ...rest
 }) => {
   const button = tv({
-    base: "flex items-center justify-center gap-2 rounded-md px-3 font-semibold transition hover:opacity-75",
+    base: `flex items-center justify-center gap-2 rounded-md px-3 font-semibold transition hover:opacity-75`,
     variants: {
-      colors: {
+      color: {
         primary: "bg-brand-primary text-white",
-        ghost: "br-transparent text-brand-dark-gray",
+        ghost: "bg-transparent text-brand-dark-gray",
         secondary: "bg-brand-light-gray text-brand-dark-blue",
         danger: "bg-brand-danger text-brand-white",
       },
       size: {
         small: "py-1 text-xs",
-        large: "py-2 text-xl",
+        large: "py-2 text-sm",
       },
       disabled: {
         true: "cursor-not-allowed opacity-50 hover:opacity-50",
       },
     },
     defaultVariants: {
-      colors: "primary",
-      size: "smalll",
+      color: "primary",
+      size: "small",
     },
-  });
+  })
 
   return (
     <button
@@ -38,14 +38,14 @@ const Button = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}
 
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   color: PropTypes.oneOf(["primary", "ghost", "secondary", "danger"]),
   size: PropTypes.oneOf(["small", "large"]),
   className: PropTypes.string,
-};
+}
 
-export default Button;
+export default Button

@@ -1,15 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query"
 
-import { api } from "../../lib/axios";
-import { taskQueriesKeys } from "../../keys/queries";
+import { taskQueryKeys } from "../../keys/queries"
+import { api } from "../../lib/axios"
 
-export const useGetUpatedTask = ({ taskId, onSuccess }) => {
+export const useGetTask = ({ taskId, onSuccess }) => {
   return useQuery({
-    queryKey: taskQueriesKeys.getOne(taskId),
+    queryKey: taskQueryKeys.getOne(taskId),
     queryFn: async () => {
-      const { data: task } = await api.get(`/tasks/${taskId}`);
-      onSuccess(task);
-      return task;
+      const { data: task } = await api.get(`/tasks/${taskId}`)
+      onSuccess(task)
+      return task
     },
-  });
-};
+  })
+}

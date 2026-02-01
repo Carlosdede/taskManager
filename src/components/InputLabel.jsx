@@ -1,12 +1,15 @@
+import PropTypes from "prop-types"
+
 const InputLabel = (props) => {
   return (
-    <label
-      className="mb-1 text-sm font-semibold text-brand-dark-blue"
-      {...props}
-    >
+    <label className="text-sm font-semibold text-brand-dark-blue" {...props}>
       {props.children}
     </label>
-  );
-};
+  )
+}
 
-export default InputLabel;
+InputLabel.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+export default InputLabel

@@ -4,13 +4,12 @@ const DashboardCard = ({ icon, mainText, secondaryText }) => {
       <div className="flex items-center gap-2">
         <span className="text-brand-primary">{icon}</span>
         <p className="text-2xl font-semibold text-brand-dark-blue">
-          {" "}
           {mainText}
         </p>
       </div>
       {secondaryText}
     </div>
-  );
-};
+  )
+}
 
-export default DashboardCard;
+export default DashboardCard

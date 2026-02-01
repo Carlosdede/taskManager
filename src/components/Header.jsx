@@ -1,12 +1,12 @@
-import { useState } from "react";
-import Button from "./Button";
+import PropTypes from "prop-types"
+import { useState } from "react"
 
-import AddIcon from "../assets/icons/add.svg?react";
-import TrashIcon from "../assets/icons/trash.svg?react";
-import AddTaskDialog from "./AddTaskDialog";
+import { AddIcon, TrashIcon } from "../assets/icons"
+import AddTaskDialog from "./AddTaskDialog"
+import Button from "./Button"
 
-const Header = ({ subtitle, title }) => {
-  const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false);
+function Header({ subtitle, title }) {
+  const [addTaskDialogIsOpen, setAddTaskDialogIsOpen] = useState(false)
   return (
     <div className="flex w-full justify-between">
       <div>
@@ -18,20 +18,26 @@ const Header = ({ subtitle, title }) => {
 
       <div className="flex items-center gap-3">
         <Button color="ghost">
-          Limpar tarefa
+          Limpar tarefas
           <TrashIcon />
         </Button>
 
         <Button onClick={() => setAddTaskDialogIsOpen(true)}>
-          Nova tarefa
           <AddIcon />
+          Nova tarefa
         </Button>
+
         <AddTaskDialog
           isOpen={addTaskDialogIsOpen}
           handleClose={() => setAddTaskDialogIsOpen(false)}
         />
       </div>
     </div>
-  );
-};
-export default Header;
+  )
+}
+
+Header.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+export default Header
