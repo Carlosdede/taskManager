@@ -8,12 +8,14 @@ import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
 import { useDeleteTask } from "../hooks/data/use-delete-task";
+import { useUpdateTask } from "../hooks/data/use-update-task";
 
-const TaskItem = ({ task, handleCheckboxClick }) => {
-  const { mutate } = useDeleteTask(task.id);
+const TaskItem = ({ task }) => {
+  const { mutate: deleteTask } = useDeleteTask(task.id);
+  const { mutate } = useUpdateTask(task.id);
 
   const handleDeleteClick = async () => {
-    mutate(undefined, {
+    deleteTask(undefined, {
       onSuccess: () => {
         toast.success("Tarefa deletada com sucesso!");
       },
@@ -34,6 +36,29 @@ const TaskItem = ({ task, handleCheckboxClick }) => {
       return "bg-brand-dark-blue bg-opacity-10 text-brand-dark-blue";
     }
   };
+  const getNewStatus = () => {
+    if (task.status === "not_started") {
+      return "in_progress";
+    }
+    if (task.status === "in_progress") {
+      return "done";
+    }
+
+    return "not_started";
+  };
+
+  const handleCheckboxClick = () => {
+    mutate(
+      {
+        status: getNewStatus(),
+      },
+      {
+        onSuccess: () =>
+          toast.success("Status da tarefa atualizado com sucesso!"),
+        onError: () => toast.error("Tarefa excluída com sucesso!"),
+      }
+    );
+  };
 
   return (
     <div
@@ -47,7 +72,7 @@ const TaskItem = ({ task, handleCheckboxClick }) => {
             type="checkbox"
             checked={task.status === "done"}
             className="absolute h-full w-full cursor-pointer opacity-0"
-            onChange={() => handleCheckboxClick(task.id)}
+            onChange={handleCheckboxClick}
           />
           {task.status === "done" && <CheckIcon />}
           {task.status === "in_progress" && (
